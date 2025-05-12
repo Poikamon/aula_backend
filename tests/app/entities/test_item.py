@@ -1,64 +1,68 @@
 import pytest
-from src.app.entities.item import Item
+from src.app.entities.item import user
 from src.app.enums.item_type_enum import ItemTypeEnum
 from src.app.errors.entity_errors import ParamNotValidated
 
 
-class Test_Item:
-    def test_item(self):
-        item = Item("test", 1.0, ItemTypeEnum.FOOD, admin_permission=True)
-        assert item.name == "test"
-        assert item.price == 1.0
-        assert item.item_type == ItemTypeEnum.FOOD
+class Test_user:
+    def test_user(self):
+        user = user("Vitor Soller", '0000', '00000-0', 1000.0)
+        assert user.name == "Vitor Soller"
+        assert user.agency == '0000'
+        assert user.account == '00000-0'
+        assert user.account_balance == 1000.0
 
-    def test_item_2(self):
-        item = Item("test", "1.0", ItemTypeEnum.FOOD, admin_permission=True)
 
-        assert item.name == "test"
-        assert item.price == "1.0"
-        assert item.item_type == ItemTypeEnum.FOOD
         
-        
-    def test_item_dict(self):
-        item = Item("test", 1.0, ItemTypeEnum.FOOD, admin_permission=True)
-        assert item.to_dict() == {'admin_permission': True, 'item_type': 'FOOD', 'name': 'test', 'price': 1.0}
+    def test_user_dict(self):
+        user = user("Vitor Soller", '0000', '00000-0', 1000.0)
+        assert user.to_dict() == {'name': 'Vitor Soller', 'agency': '0000', 'account': '00000-0', 'account_balance': 1000.0}
     
-    def test_item_name_is_none(self):
+    def test_user_name_is_none(self):
         with pytest.raises(ParamNotValidated):
-            Item(price=1.0, item_type=ItemTypeEnum.FOOD, admin_permission=True)
+            user(agency='0000', account='00000-0', account_balance='1000.0')
             
-    def test_item_name_is_not_string(self):
+    def test_user_name_is_not_string(self):
         with pytest.raises(ParamNotValidated):
-            Item(name=1.0, price=1.0, item_type=ItemTypeEnum.FOOD, admin_permission=True)
+            user(name=1, agency='0000', account='00000-0', account_balance=1000.0)
             
-    def test_item_name_is_too_short(self):
+    def test_user_name_no_name_at_all_poggers(self):
         with pytest.raises(ParamNotValidated):
-            Item(name="te", price=1.0, item_type=ItemTypeEnum.FOOD, admin_permission=True)
+          user(name="" ,agency='0000', account='00000-0', account_balance=1000.0)        
+     
+    def test_user_agency_is_none(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", account='00000-0', account_balance=1000.0)
             
-    def test_item_price_is_none(self):
+    def test_user_agency_is_not_float(self):
         with pytest.raises(ParamNotValidated):
-            Item(name="test", item_type=ItemTypeEnum.FOOD, admin_permission=True)
-            
-    def test_item_price_is_not_float(self):
-        with pytest.raises(ParamNotValidated):
-            Item(name="test", price="1.0", item_type=ItemTypeEnum.FOOD, admin_permission=True)
+             user(name="Vitor Soller", agency="Bem-aventurados aqueles que lavam as suas vestiduras [no sangue do Cordeiro], para que lhes assista o direito à árvore da vida, e entrem na cidade pelas portas.", account='00000-0', account_balance=1000.0)
 
-    def test_item_price_is_negative(self):
-        # Vamos completar o teste com um valor negativo
-        pass
-            
-    def test_item_type_is_none(self):
-        # Vamos completar o teste com um valor None
-        pass
+    def test_user_agency_isnt_4(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='000', account='00000-0', account_balance=1000.0)
 
-    def test_item_type_is_not_enum(self):
-        # Vamos completar o teste com um valor que não é do tipo enum
-        pass 
+    def test_user_account_is_none(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='0000', account_balance=1000.0)
+        
+    def test_user_account_is_not_str(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='0000', account=1, account_balance=1000.0)
+    
+    def test_user_account_not_the_pattern(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='0000', account='000000', account_balance=1000.0)
 
-    def test_item_admin_permission_is_none(self):
-        # Vamos completar o teste com um valor None
-        pass
+    def test_user_account_balance_is_none(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='0000', account=00000-0)
 
-    def test_item_admin_permission_is_not_bool(self):
-        # Vamos completar o teste com um valor que não é do tipo bool
-        pass
+    def test_user_account_balance_is_not_float(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='0000', account='00000-0', account_balance="Bem-aventurados aqueles que lavam as suas vestiduras [no sangue do Cordeiro], para que lhes assista o direito à árvore da vida, e entrem na cidade pelas portas.")
+
+    def test_user_account_balance_is_not_positive(self):
+        with pytest.raises(ParamNotValidated):
+            user(name="Vitor Soller", agency='0000', account='00000-0', account_balance=-1000.0)
+  

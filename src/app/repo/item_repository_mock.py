@@ -10,10 +10,7 @@ class ItemRepositoryMock(IItemRepository):
     
     def __init__(self):
         self.items = {
-            1: Item(name="Barbie", price=48.90, item_type=ItemTypeEnum.TOY, admin_permission=False),
-            2: Item(name="Hamburguer", price=38.00, item_type=ItemTypeEnum.FOOD, admin_permission=False),
-            3: Item(name="T-shirt", price=22.95, item_type=ItemTypeEnum.CLOTHES, admin_permission=False),
-            4: Item(name="Super Mario Bros", price=55.00, item_type=ItemTypeEnum.GAMES, admin_permission=True)
+          
         }
         
     def get_all_items(self) -> List[Item]:
